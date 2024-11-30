@@ -1,20 +1,19 @@
-from typing import Union
+from typing import List, Optional
 from pydantic import BaseModel
 
+from pydantic import BaseModel
 
 class Message(BaseModel):
-    role: str
-    content: str
+    role: Optional[str] = None
+    content: Optional[str] = None
 
 class Query(BaseModel):
-    messages: list[Message]
+    messages: List[Message] = []
     temperature: float = 0.5
     max_tokens: int = 10200
     top_p: float = 0.7
     stream: bool = False
 
-
-class Item(BaseModel):
-    name: str
-    price: float
-    is_offer: Union[bool, None] = None    
+class QueryRequest(BaseModel):
+    query: Query
+    hf_token: str
