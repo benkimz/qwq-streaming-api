@@ -15,6 +15,17 @@ async def query_model(qreq: QueryRequest):
 
     messages = [message.model_dump() for message in qreq.query.messages]
     
+    if not qreq.query.stream:
+        response = client.chat.completions.create(
+            model="Qwen/QwQ-32B-Preview",
+            messages=messages,
+            temperature=qreq.query.temperature,
+            max_tokens=qreq.query.max_tokens,
+            top_p=qreq.query.top_p,
+            stream=qreq.query.stream
+        )
+        return response.choices[0].message.content
+    
     async def chat_stream():
         stream = client.chat.completions.create(
             model="Qwen/QwQ-32B-Preview",

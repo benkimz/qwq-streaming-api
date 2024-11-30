@@ -7,7 +7,7 @@ query_payload = {
     "hf_token": hf_token,
     "query": {
         "messages": [
-            {"role": "user", "content": "What is Qwen?"},
+            {"role": "user", "content": "Tell me a very short story."},
         ],
         "temperature": 0.7,
         "max_tokens": 10000,
@@ -20,10 +20,14 @@ response = requests.post(url, json=query_payload, stream=True, headers={
     "Content-Type": "application/json"
 })
 
+
 if response.status_code == 200:
-    print("Streaming response:")
-    for chunk in response.iter_content(chunk_size=1024):
-        if chunk:
-            print(chunk.decode("utf-8"), end="", flush=True)
+    if not query_payload["query"]["stream"]:
+        print(response.text)
+    else:
+        print("Streaming response:")
+        for chunk in response.iter_content(chunk_size=1024):
+            if chunk:
+                print(chunk.decode("utf-8"), end="", flush=True)
 else:
     print(f"Error: {response.status_code} - {response.text}")
