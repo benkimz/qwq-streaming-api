@@ -3,6 +3,8 @@ from typing import Union
 from fastapi import FastAPI
 from pydantic import BaseModel
 
+from huggingface_hub import InferenceClient
+
 app = FastAPI()
 
 
@@ -10,6 +12,17 @@ class Item(BaseModel):
     name: str
     price: float
     is_offer: Union[bool, None] = None
+
+class Message(BaseModel):
+    role: str
+    content: str
+
+class Query(BaseModel):
+    messages: list[Message]
+    temperature: float = 0.5
+    max_tokens: int = 10200
+    top_p: float = 0.7
+    stream: bool = False
 
 
 @app.get("/")
