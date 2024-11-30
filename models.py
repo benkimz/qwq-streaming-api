@@ -1,3 +1,4 @@
+from typing import Union
 from pydantic import BaseModel
 
 
@@ -11,3 +12,9 @@ class Query(BaseModel):
     max_tokens: int = 10200
     top_p: float = 0.7
     stream: bool = False
+
+
+class Item(BaseModel):
+    name: str
+    price: float
+    is_offer: Union[bool, None] = None    
